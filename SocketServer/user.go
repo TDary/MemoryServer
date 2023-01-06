@@ -1,4 +1,4 @@
-package main
+package SocketServer
 
 import (
 	"MemoryServer/Logs"

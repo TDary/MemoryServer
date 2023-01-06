@@ -2,24 +2,24 @@
 package main
 
 import (
+	"MemoryServer/HttpServer"
 	"MemoryServer/Logs"
+	"MemoryServer/SocketServer"
 	"time"
 )
 
 func main() {
-	//启动服务器
-	go StartServer()
+	//启动与Unity通信服务器
+	go SocketServer.StartServer()
+
+	//启动与用户通信服务器
+	go HttpServer.ListenAndServer("10.11.144.31:9070")
 
 	//写入其他业务逻辑
-	Logs.Loggers().Print("这是一个Go服务端，socket消息广播功能")
+	Logs.Loggers().Print("服务器启动成功")
 
 	//防止主线程退出
 	for {
 		time.Sleep(1 * time.Second)
 	}
-}
-
-func StartServer() {
-	server := NewServer("127.0.0.1", 8231)
-	server.Start()
 }

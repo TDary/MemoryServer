@@ -1,4 +1,4 @@
-package main
+package SocketServer
 
 import (
 	"MemoryServer/Logs"
@@ -7,6 +7,15 @@ import (
 	"net"
 	"sync"
 )
+
+var AllInfo []InfoData
+
+type InfoData struct {
+	Ip           string
+	UnityVersion string
+	IsTakeSimple bool
+	FileName     string
+}
 
 type Server struct {
 	Ip   string
@@ -93,6 +102,11 @@ func (serv *Server) Handler(conn net.Conn) {
 func (serv *Server) BroadCast(user *User, msg string) {
 	sendMsg := "[" + user.Addr + "]: " + msg
 
+	serv.Message <- sendMsg
+}
+
+func (serv *Server) ReceiveFromApi(username string, msg string) {
+	sendMsg := "[" + username + "]: " + msg
 	serv.Message <- sendMsg
 }
 

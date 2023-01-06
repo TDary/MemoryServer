@@ -2,7 +2,7 @@ package HttpServer
 
 import (
 	"MemoryServer/Logs"
-	"MemoryServer/ParseServer"
+	"MemoryServer/SocketServer"
 	"encoding/json"
 	"net/http"
 	"strings"
@@ -18,12 +18,11 @@ func ListenAndServer(address string) {
 func DealReceivedMessage(msg string) int {
 	if strings.Contains(msg, "memoryDetail") {
 		beginMsg := strings.Split(msg, "?")[1]
-		ParseServer.Analyze(beginMsg)
+		go SocketServer.GetData(beginMsg)
 		Logs.Loggers().Print("接收到开始获取内存的消息----")
 		return 200
 	} else {
 		return 400
-		//TODO:扩展处理模块
 	}
 }
 
